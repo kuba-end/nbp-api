@@ -26,7 +26,9 @@ class ProcessDataService
         {
             $this->currencyNames[]=$single['currency'];
             $this->currencyCodes[]=$single['code'];
-            $this->currencyRates[]=$single['mid'];
+            $rate=round($single['mid'],6);
+            $grosze = $rate * 100;
+            $this->currencyRates[]=$grosze;
         }
 
     }

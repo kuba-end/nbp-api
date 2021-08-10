@@ -36,15 +36,15 @@ class CurrencyRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Currency
+
+    public function findOneBySomeField($value):?string
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('name')
+            ->Where('currency.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }
