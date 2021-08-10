@@ -15,7 +15,6 @@ class UpdateDatabaseService extends AbstractController
     public function __construct(EntityManagerInterface $entityManager)
     {
      $this->entityManager = $entityManager;
-     $this->entityCurrency = new Currency();
     }
 
     public function updateDb(ProcessDataService $data)
@@ -23,27 +22,23 @@ class UpdateDatabaseService extends AbstractController
         $codes = $data->currencyCodes;
         $names = $data->currencyNames;
         $rates = $data->currencyRates;
+        $batchSize=count($codes);
         $em = $this->entityManager;
-        foreach ($codes as $code)
+
+
+        for ($i=0;$i <= $batchSize-1;$i++)
         {
+            $this->entityCurrency = new Currency();
+            $code = $codes[$i];
+            $name = $names[$i];
+            $rate = $rates[$i];
+            $amount = $rates[$i];
             $this->entityCurrency->setCurrencyCode($code);
-            $em->persist($this->entityCurrency);
-        }
-        foreach ($names as $name)
-        {
             $this->entityCurrency->setName($name);
-            $em->persist($this->entityCurrency);
-        }
-        foreach ($rates as $rate)
-        {
             $this->entityCurrency->setExchangeRate($rate);
+            $this->entityCurrency->setAmount($amount);
             $em->persist($this->entityCurrency);
+            $em->flush();
         }
-        foreach ($rates as $rate)
-        {
-            $this->entityCurrency->setAmount($rate);
-            $em->persist($this->entityCurrency);
-        }
-        $em->flush();
     }
 }
