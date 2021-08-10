@@ -7,13 +7,13 @@ class NbpClient extends AbstractClient
 {
     const NBP_URI="http://api.nbp.pl/api";
 
-    public function request($goal, $specific)
+    public function request($firstParam, $secondParam)
     {
         $method="GET";
         $exchangeRates = "/exchangerates";
-        $goal = "/".$goal;
-        $specific = "/".$specific;
-        $uri = self::NBP_URI.$exchangeRates.$goal.$specific;
+        $firstParam = "/".$firstParam;
+        $secondParam = "/".$secondParam;
+        $uri = self::NBP_URI.$exchangeRates.$firstParam.$secondParam;
 
         return $this->client->request($method,$uri);
     }
