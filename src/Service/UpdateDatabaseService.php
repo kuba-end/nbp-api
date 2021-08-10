@@ -18,12 +18,32 @@ class UpdateDatabaseService extends AbstractController
      $this->entityCurrency = new Currency();
     }
 
-    public function updateDb()
+    public function updateDb(ProcessDataService $data)
     {
+        $codes = $data->currencyCodes;
+        $names = $data->currencyNames;
+        $rates = $data->currencyRates;
         $em = $this->entityManager;
-        $this->entityCurrency->setName('test');
-        $this->entityCurrency->setCurrencyCode('test');
-        $this->entityCurrency->setExchangeRate(1);
-        $this->entityCurrency->setAmount(1);
+        foreach ($codes as $code)
+        {
+            $this->entityCurrency->setCurrencyCode($code);
+            $em->persist($this->entityCurrency);
+        }
+        foreach ($names as $name)
+        {
+            $this->entityCurrency->setName($name);
+            $em->persist($this->entityCurrency);
+        }
+        foreach ($rates as $rate)
+        {
+            $this->entityCurrency->setExchangeRate($rate);
+            $em->persist($this->entityCurrency);
+        }
+        foreach ($rates as $rate)
+        {
+            $this->entityCurrency->setAmount($rate);
+            $em->persist($this->entityCurrency);
+        }
+        $em->flush();
     }
 }

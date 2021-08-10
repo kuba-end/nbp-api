@@ -5,6 +5,9 @@ namespace App\Service;
 class ProcessDataService
 {
     private $response;
+    public array $currencyNames = [];
+    public array $currencyCodes = [];
+    public array $currencyRates = [];
 
     public function __construct($response)
     {
@@ -15,16 +18,41 @@ class ProcessDataService
     {
         $response = $this->response->request($firstParam,$secondParam);
 
-        $currencyNames = [];
-        $currencyCodes = [];
-        $currencyRates = [];
+
+
+
 
         foreach ($response[0]['rates'] as $single)
         {
-            $currencyNames[]=$single['currency'];
-            $currencyCodes[]=$single['code'];
-            $currencyRates[]=$single['mid'];
+            $this->currencyNames[]=$single['currency'];
+            $this->currencyCodes[]=$single['code'];
+            $this->currencyRates[]=$single['mid'];
         }
-        var_dump($currencyNames);
+
     }
+
+    /**
+     * @return array
+     */
+    public function getCurrencyRates(): array
+    {
+        return $this->currencyRates;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCurrencyNames(): array
+    {
+        return $this->currencyNames;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCurrencyCodes(): array
+    {
+        return $this->currencyCodes;
+    }
+
 }
