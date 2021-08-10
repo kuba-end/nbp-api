@@ -25,5 +25,6 @@ class ProcessDataService
             $currencyCodes[]=$single['code'];
             $currencyRates[]=$single['mid'];
         }
+        var_dump($currencyNames);
     }
 }
