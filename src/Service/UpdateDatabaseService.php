@@ -3,10 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Currency;
-use App\Repository\CurrencyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use const http\Client\Curl\Versions\CURL;
 
 class UpdateDatabaseService extends AbstractController
 {
@@ -31,14 +29,14 @@ class UpdateDatabaseService extends AbstractController
         for ($i=0;$i <= $batchSize-1;$i++)
         {
             $code = $codes[$i];
+            $name = $names[$i];
+            $rate = $rates[$i];
             if (! $em->getRepository(Currency::class)->findBy(
                 [
                     'currency_code' => $code
                 ]
             )) {
                 $this->entityCurrency = new Currency();
-                $name = $names[$i];
-                $rate = $rates[$i];
                 $amount = 1;
                 if ($rate<0.5){
                     $amount=1000;
@@ -70,6 +68,15 @@ class UpdateDatabaseService extends AbstractController
                     $em->flush();
                 }
 
+            }else
+            {
+                $record = $em->getRepository(Currency::class)->findOneBy(
+                    [
+                    'currency_code' => $code
+                    ]
+                );
+                $record->setExchangeRate($rate);
+                $em->flush();
             }
         }
     }

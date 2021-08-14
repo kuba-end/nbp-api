@@ -2,7 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\Currency;
 use GuzzleHttp\Client as HttpClient;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 abstract class AbstractClient
 {
@@ -24,5 +28,16 @@ abstract class AbstractClient
             );
         }
         return $body;
+    }
+    public function serializer($response): object
+    {
+        $response = $response->getBody();
+        echo $response;
+        $encoder = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers,$encoder);
+
+        return $serializer->deserialize($response, Currency::class,'json');
     }
 }

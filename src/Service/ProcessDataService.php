@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Command\AbstractCommand;
+
 class ProcessDataService
 {
     private $response;
@@ -13,12 +15,13 @@ class ProcessDataService
     {
         $this->response=$response;
     }
+    public function handle()
+    {
 
+    }
     public function getAllCurrenciesData($firstParam, $secondParam)
     {
         $response = $this->response->request($firstParam,$secondParam);
-
-
 
 
 
