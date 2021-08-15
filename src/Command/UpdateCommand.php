@@ -2,13 +2,10 @@
 
 namespace App\Command;
 
-use App\Service\DecodeResponseService;
 use App\Service\NbpClient;
 use App\Service\ProcessDataService;
 use App\Service\UpdateDatabaseService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Config\Doctrine\Orm\EntityManagerConfig;
 
 class UpdateCommand extends AbstractCommand
 {
@@ -16,13 +13,18 @@ class UpdateCommand extends AbstractCommand
     public $em;
 
 
-
+    /**
+     * @param EntityManagerInterface $em
+     */
     public function __construct(EntityManagerInterface $em)
     {
         parent::__construct($name = null);
         $this->em=$em;
     }
 
+    /**
+     *
+     */
     public function handle()
     {
         $firstParam = 'tables';

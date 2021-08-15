@@ -11,16 +11,27 @@ class UpdateDatabaseService extends AbstractController
     public $entityManager;
     public $entityCurrency;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
      $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param ProcessDataService $data
+     *
+     * Core method, iterate over the array for pick currency codes, names and rates.
+     * If rate<0.5 amount of currency is set to 1000 and rate is multiplied times 1000,
+     * rates less than 10 and bigger than 0 are multiplied times 10 and amount is set to 10
+     */
     public function updateDb(ProcessDataService $data)
     {
         $codes = $data->currencyCodes;
         $names = $data->currencyNames;
         $rates = $data->currencyRates;
+        $amount = 1;
         $batchSize=count($codes);
         $em = $this->entityManager;
 
@@ -37,7 +48,6 @@ class UpdateDatabaseService extends AbstractController
                 ]
             )) {
                 $this->entityCurrency = new Currency();
-                $amount = 1;
                 if ($rate<0.5){
                     $amount=1000;
                     $rate=$rate*1000;
@@ -75,8 +85,21 @@ class UpdateDatabaseService extends AbstractController
                     'currency_code' => $code
                     ]
                 );
-                $record->setExchangeRate($rate);
-                $em->flush();
+                if ($rate<0.5) {
+                    $amount = 1000;
+                    $rate = $rate * 1000;
+                    $record->setExchangeRate($rate);
+                    $em->flush();
+                }
+                elseif (10>$rate && $rate>0) {
+                    $amount = 10;
+                    $rate = $rate * 10;
+                    $record->setExchangeRate($rate);
+                    $em->flush();
+                }else{
+                    $record->setExchangeRate($rate);
+                    $em->flush();
+                }
             }
         }
     }

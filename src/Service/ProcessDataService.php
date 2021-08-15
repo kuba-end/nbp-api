@@ -11,14 +11,26 @@ class ProcessDataService
     public array $currencyCodes = [];
     public array $currencyRates = [];
 
+    /**
+     * @param $response
+     * This class is called in App\Command\UpdateCommand and as a param for __construct method
+     * App\Service\NbpClient is passed
+     */
     public function __construct($response)
     {
         $this->response=$response;
     }
-    public function handle()
-    {
 
-    }
+    /**
+     * @param $firstParam
+     * @param $secondParam
+     *
+     * Hard typed params only for task, in future there will be many options available
+     * to get all data from nbp api
+     *
+     * Method could be use in App\Command\UpdateCommand for took all datas from tables
+     * from nbp-api
+     */
     public function getAllCurrenciesData($firstParam, $secondParam)
     {
         $response = $this->response->request($firstParam,$secondParam);
