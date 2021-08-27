@@ -2,18 +2,104 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
+        <title>{% block title %}R8S{% endblock %}</title>
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/simpleLightbox.min.css') }}">
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand {% if app.request.get('_route') == 'home' %}active{% endif%}" href="{{ path('home') }}">Exchange R8S</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.get('_route') == 'home' %}active{% endif%}" aria-current="page" href="{{ path('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.get('_route') == 'rates' %}active{% endif%}" href="{{ path('rates') }}">Rates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.get('_route') == 'history' %}active{% endif%}" href="{{ path('history') }}">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.get('_route') == 'contact' %}active{% endif%}"" href="{{ path('contact') }}" >Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        {% block body %}
+            <div class="px-4 py-5 my-5 text-center">
+                <img class="d-block mx-auto mb-4" src="{{ asset('assets/images/dollar.png') }}" alt="">
+                <h1 class="display-5 fw-bold">Check currency rates</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4">
+                        App which allows you to check current and historical currency rates.
+                        You can search through history of single currency to find minimum and maximum rate from past year.
+                    </p>
+                    <p class="lead mb-4">
+                        Data comes from official <a href="nbp.pl">NBP</a> site.
+                    </p>
+
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Primary button</button>
+                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Secondary</button>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    <footer class="text-center text-white" style="background-color: #f1f1f1;">
+        <!-- Grid container -->
+        <div class="container pt-4">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a
+                        class="btn btn-link btn-floating btn-lg text-dark m-1"
+                        href="https://www.facebook.com/kubarudzinskidotpl/"
+                        role="button"
+                        data-mdb-ripple-color="dark"
+                ><img src="{{ asset('assets/images/facebook.png') }}"></a>
+
+                <!-- Instagram -->
+                <a
+                        class="btn btn-link btn-floating btn-lg text-dark m-1"
+                        href="https://www.instagram.com/kubarudzinski.pl/"
+                        role="button"
+                        data-mdb-ripple-color="dark"
+                ><img src="{{ asset('assets/images/instagram.png') }}"></a>
+
+                <!-- Linkedin -->
+                <a
+                        class="btn btn-link btn-floating btn-lg text-dark m-1"
+                        href="https://www.linkedin.com/in/kuba-rudzinski/"
+                        role="button"
+                        data-mdb-ripple-color="dark"
+                ><img src="{{ asset('assets/images/linkedin.png') }}"></a>
+                <!-- Github -->
+                <a
+                        class="btn btn-link btn-floating btn-lg text-dark m-1"
+                        href="https://github.com/kuba-end"
+                        role="button"
+                        data-mdb-ripple-color="dark"
+                ><img src="{{ asset('assets/images/github.png') }}"></a>
+            </section>
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2021
+            <a class="text-dark" href="https://jrcode.it/">jRcode.it</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
     </body>
 </html>
