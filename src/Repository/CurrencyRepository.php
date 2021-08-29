@@ -19,19 +19,17 @@ class CurrencyRepository extends ServiceEntityRepository
         parent::__construct($registry, Currency::class);
     }
 
-//    public function findAll()
-//    {
-//        return $this->createQueryBuilder('currency')
-//            ->where('currency.)
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-
+    public function findTable($table)
+    {
+        return $this->createQueryBuilder('currency')
+            ->where('currency.tablee = :name')
+            ->setParameter('name',$table)
+            ->orderBy('currency.name', 'ASC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     public function findOneBySomeField($value):?string
     {

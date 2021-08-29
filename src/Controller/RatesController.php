@@ -28,16 +28,18 @@ class RatesController extends AbstractController
         if ($form->get('table_A')->isClicked())
         {
             $tableName = $form->get('table_A')->getName();
+            $table = 'A';
             $check = new UpdateCommand($emi);
             $check->handle($tableName);
-            $currency = $em->getRepository(Currency::class)->findAll();
+            $currency = $em->getRepository(Currency::class)->findTable($table);
 
         }elseif ($form->get('table_B')->isClicked())
         {
             $tableName = $form->get('table_B')->getName();
+            $table = 'B';
             $check = new UpdateCommand($emi);
             $check->handle($tableName);
-            $currency = $em->getRepository(Currency::class)->findAll();
+            $currency = $em->getRepository(Currency::class)->findTable($table);
         }
         return $this->render('rates/index.html.twig' ,[
             'allCurrencies' => $currency,

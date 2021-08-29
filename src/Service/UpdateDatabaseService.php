@@ -59,7 +59,7 @@ class UpdateDatabaseService extends AbstractController
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }
-                elseif (10>$rate && $rate>0)
+                elseif (10>=$rate && $rate>=0.5)
                 {
                     $amount=10;
                     $rate=$rate*10;
