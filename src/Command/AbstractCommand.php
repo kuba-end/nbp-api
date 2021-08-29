@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Form\TableFormType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -20,10 +21,10 @@ abstract class AbstractCommand extends Command
         $this->input = $input;
         $this->output = $output;
 
-        return $this->handle();
+       // return $this->handle();
     }
 
-    abstract public function handle();
+    abstract public function handle(string $form);
     protected function askChoiceQuestion(string $question, array $choices, $default = null)
     {
         $question = new ChoiceQuestion($question, $choices, $default);

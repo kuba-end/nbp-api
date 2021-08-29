@@ -26,7 +26,7 @@ class UpdateDatabaseService extends AbstractController
      * If rate<0.5 amount of currency is set to 1000 and rate is multiplied times 1000,
      * rates less than 10 and bigger than 0 are multiplied times 10 and amount is set to 10
      */
-    public function updateDb(ProcessDataService $data)
+    public function updateDb(ProcessDataService $data, string $table)
     {
         $codes = $data->currencyCodes;
         $names = $data->currencyNames;
@@ -55,6 +55,7 @@ class UpdateDatabaseService extends AbstractController
                     $this->entityCurrency->setName($name);
                     $this->entityCurrency->setExchangeRate($rate);
                     $this->entityCurrency->setAmount($amount);
+                    $this->entityCurrency->setTablee($table);
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }
@@ -66,6 +67,7 @@ class UpdateDatabaseService extends AbstractController
                     $this->entityCurrency->setName($name);
                     $this->entityCurrency->setExchangeRate($rate);
                     $this->entityCurrency->setAmount($amount);
+                    $this->entityCurrency->setTablee($table);
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }
@@ -74,6 +76,7 @@ class UpdateDatabaseService extends AbstractController
                     $this->entityCurrency->setName($name);
                     $this->entityCurrency->setExchangeRate($rate);
                     $this->entityCurrency->setAmount($amount);
+                    $this->entityCurrency->setTablee($table);
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }

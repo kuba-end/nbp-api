@@ -26,6 +26,10 @@ class Currency
      * @ORM\Column(type="string", length=64)
      */
     private $name;
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private $tablee;
 
     /**
      * @ORM\Column(type="string", length=8)
@@ -93,5 +97,14 @@ class Currency
         $this->amount = $amount;
 
         return $this;
+    }
+    public function setTablee(string $tablee): self
+    {
+        $this->tablee = $tablee;
+        return $this;
+    }
+    public function getTablee(): ?string
+    {
+        return $this->tablee;
     }
 }

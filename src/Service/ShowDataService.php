@@ -23,7 +23,7 @@ class ShowDataService
     {
         foreach ($data as $single)
         {
-            echo $single;
+            return $single;
         }
     }
 }

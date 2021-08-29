@@ -4,13 +4,39 @@
 
 {% block body %}
 
-{#    {% for currency in allCurrencies %}#}
 
-{#        <div><li><b>Name: </b>{{ currency.name }}</li>#}
-{#            <li><b>Currency code: </b>{{ currency.currencycode }}</li>#}
-{#            <li><b>Rate: </b>{{ currency.exchangerate}} gr <b>for </b>{{ currency.amount }} {{ currency.currencycode }}</li>#}
-{#            <br>#}
-{#        </div>#}
-{#    {% endfor %}#}
+    <div class="col-lg-6 mx-auto text-center">
+        <h1 class="mt-4 mb-4">
+            Choose one of available tables
+        </h1>
+    <div class="h1 mb-5 mt-5 text-center">
+        {% form_theme tableForm 'bootstrap_4_layout.html.twig'%}
+
+        {{ form_start(tableForm)}}
+            <div class="mb-5">
+                {{ form_row(tableForm.table_A) }}
+            </div>
+            <div class="mb-5">
+                    {{ form_row(tableForm.table_B) }}
+            </div>
+        {{ form_end(tableForm) }}
+    </div>
+        {% for currency in allCurrencies %}
+        <div class="card-group">
+
+        <div class="card">
+                            <div class="card-body">
+                                <p><b>Name: </b>{{ currency.name }}</p>
+                                <p><b>Currency code: </b>{{ currency.currencycode }}</p>
+                                <p><b>Rate: </b>{{ currency.exchangerate}} gr <b>for </b>{{ currency.amount }} {{ currency.currencycode }}</p>
+                                <p><b>Currency table: </b>{{ currency.tablee }}</p>
+
+                            </div>
+                        </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 {% endblock %}

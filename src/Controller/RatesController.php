@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Command\UpdateCommand;
 use App\Entity\Currency;
+use App\Form\TableFormType;
+use App\Service\ShowDataService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,12 +18,30 @@ class RatesController extends AbstractController
      * @Route( "/rates", name = "rates")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(Request $request, EntityManagerInterface $emi)
     {
         $em = $this->getDoctrine()->getManager();
-        $currency = $em->getRepository(Currency::class)->findAll();
+        $currency = null;
+        $form = $this->createForm(TableFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->get('table_A')->isClicked())
+        {
+            $tableName = $form->get('table_A')->getName();
+            $check = new UpdateCommand($emi);
+            $check->handle($tableName);
+            $currency = $em->getRepository(Currency::class)->findAll();
+
+        }elseif ($form->get('table_B')->isClicked())
+        {
+            $tableName = $form->get('table_B')->getName();
+            $check = new UpdateCommand($emi);
+            $check->handle($tableName);
+            $currency = $em->getRepository(Currency::class)->findAll();
+        }
         return $this->render('rates/index.html.twig' ,[
-            'allCurrencies' => $currency
+            'allCurrencies' => $currency,
+            'tableForm' => $form->createView(),
         ]);
     }
 }
