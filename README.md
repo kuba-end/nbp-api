@@ -1,3 +1,3 @@
 # nbp-api
-###Site where u can check current and historical currency rates
+### Site where u can check current and historical currency rates
 
