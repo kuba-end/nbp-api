@@ -15,6 +15,7 @@ class NbpClient extends AbstractClient
         $secondParam = "/".$secondParam;
         $uri = self::NBP_URI.$exchangeRates.$firstParam.$secondParam;
 
-        return $this->decode($this->client->request($method,$uri));
+        return $this->decode($this->client->request($method, $uri));
+
     }
 }

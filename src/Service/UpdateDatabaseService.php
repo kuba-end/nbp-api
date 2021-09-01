@@ -31,7 +31,7 @@ class UpdateDatabaseService extends AbstractController
         $codes = $data->currencyCodes;
         $names = $data->currencyNames;
         $rates = $data->currencyRates;
-        $amount = 1;
+        $grosze = $data->currencyRatesGrosze;
         $batchSize=count($codes);
         $em = $this->entityManager;
 
@@ -39,68 +39,88 @@ class UpdateDatabaseService extends AbstractController
 
         for ($i=0;$i <= $batchSize-1;$i++)
         {
+            $amount = 1;
             $code = $codes[$i];
             $name = $names[$i];
             $rate = $rates[$i];
-            if (! $em->getRepository(Currency::class)->findBy(
+            $grosz = $grosze[$i];
+
+            if ( ! $em->getRepository(Currency::class)->findBy(
                 [
                     'currency_code' => $code
                 ]
             )) {
-                $this->entityCurrency = new Currency();
-                if ($rate<0.5){
-                    $amount=1000;
-                    $rate=$rate*1000;
-                    $this->entityCurrency->setCurrencyCode($code);
-                    $this->entityCurrency->setName($name);
-                    $this->entityCurrency->setExchangeRate($rate);
-                    $this->entityCurrency->setAmount($amount);
-                    $this->entityCurrency->setTablee($table);
-                    $em->persist($this->entityCurrency);
-                    $em->flush();
-                }
-                elseif (10>=$rate && $rate>=0.5)
+                if ($rate < 0.1 && $rate > 0.01)
                 {
-                    $amount=10;
-                    $rate=$rate*10;
+                    $amount = 100;
+                    $grosz = $grosz * 100;
+                    $this->entityCurrency = new Currency();
                     $this->entityCurrency->setCurrencyCode($code);
                     $this->entityCurrency->setName($name);
-                    $this->entityCurrency->setExchangeRate($rate);
+                    $this->entityCurrency->setExchangeRate(round($grosz));
                     $this->entityCurrency->setAmount($amount);
                     $this->entityCurrency->setTablee($table);
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }
-                else{
+                elseif ($rate <= 0.01)
+                {
+                    $amount=1000;
+                    $grosz=$grosz*1000;
+                    $this->entityCurrency = new Currency();
                     $this->entityCurrency->setCurrencyCode($code);
                     $this->entityCurrency->setName($name);
-                    $this->entityCurrency->setExchangeRate($rate);
+                    $this->entityCurrency->setExchangeRate(round($grosz));
+                    $this->entityCurrency->setAmount($amount);
+                    $this->entityCurrency->setTablee($table);
+                    $em->persist($this->entityCurrency);
+                    $em->flush();
+                }elseif ($rate <= 0.0001)
+                {
+                    $amount=100000;
+                    $grosz=$grosz*100000;
+                    $this->entityCurrency = new Currency();
+                    $this->entityCurrency->setCurrencyCode($code);
+                    $this->entityCurrency->setName($name);
+                    $this->entityCurrency->setExchangeRate(round($grosz));
+                    $this->entityCurrency->setAmount($amount);
+                    $this->entityCurrency->setTablee($table);
+                    $em->persist($this->entityCurrency);
+                    $em->flush();
+                }else{
+                    $this->entityCurrency = new Currency();
+                    $this->entityCurrency->setCurrencyCode($code);
+                    $this->entityCurrency->setName($name);
+                    $this->entityCurrency->setExchangeRate(round($grosz));
                     $this->entityCurrency->setAmount($amount);
                     $this->entityCurrency->setTablee($table);
                     $em->persist($this->entityCurrency);
                     $em->flush();
                 }
-
-            }else
+            }
+            else
             {
                 $record = $em->getRepository(Currency::class)->findOneBy(
                     [
                     'currency_code' => $code
                     ]
                 );
-                if ($rate<0.5) {
-                    $amount = 1000;
-                    $rate = $rate * 1000;
-                    $record->setExchangeRate($rate);
+                if ($rate < 0.1 && $rate > 0.01) {
+                    $grosz = $grosz * 100;
+                    $record->setExchangeRate(round($grosz));
                     $em->flush();
                 }
-                elseif (10>$rate && $rate>0) {
-                    $amount = 10;
-                    $rate = $rate * 10;
-                    $record->setExchangeRate($rate);
+                elseif ($rate <= 0.01 && $rate > 0.0001) {
+                    $grosz = $grosz * 1000;
+                    $record->setExchangeRate(round($grosz));
+                    $em->flush();
+                }
+                elseif ($rate <= 0.0001) {
+                    $grosz = $grosz * 100000;
+                    $record->setExchangeRate(round($grosz));
                     $em->flush();
                 }else{
-                    $record->setExchangeRate($rate);
+                    $record->setExchangeRate(round($grosz));
                     $em->flush();
                 }
             }

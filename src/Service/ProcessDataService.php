@@ -10,6 +10,7 @@ class ProcessDataService
     public array $currencyNames = [];
     public array $currencyCodes = [];
     public array $currencyRates = [];
+    public array $currencyRatesGrosze = [];
     public string $currencyTables;
 
     /**
@@ -37,14 +38,14 @@ class ProcessDataService
         $response = $this->response->request($firstParam,$secondParam);
 
 
-
         foreach ($response[0]['rates'] as $single)
         {
             $this->currencyNames[]=$single['currency'];
             $this->currencyCodes[]=$single['code'];
-            $rate=round($single['mid'],6);
-            $grosze = $rate * 100;
-            $this->currencyRates[]=$grosze;
+            $rate=$single['mid'];
+            $grosze = $rate*100;
+            $this->currencyRates[]=$rate;
+            $this->currencyRatesGrosze[]=$grosze;
             $this->currencyTables=$secondParam;
         }
 
@@ -56,6 +57,13 @@ class ProcessDataService
     public function getCurrencyRates(): array
     {
         return $this->currencyRates;
+    }
+    /**
+     * @return array
+     */
+    public function getCurrencyRatesGrosze(): array
+    {
+        return $this->currencyRatesGrosze;
     }
 
     /**

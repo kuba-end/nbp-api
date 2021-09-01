@@ -22,6 +22,7 @@ class RatesController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $currency = null;
+        $lol2 = null;
         $form = $this->createForm(TableFormType::class);
         $form->handleRequest($request);
 
@@ -32,6 +33,9 @@ class RatesController extends AbstractController
             $check = new UpdateCommand($emi);
             $check->handle($tableName);
             $currency = $em->getRepository(Currency::class)->findTable($table);
+            $lol = new ShowDataService($emi);
+            $lol2 = $lol->getData($currency);
+
 
         }elseif ($form->get('table_B')->isClicked())
         {
@@ -40,9 +44,12 @@ class RatesController extends AbstractController
             $check = new UpdateCommand($emi);
             $check->handle($tableName);
             $currency = $em->getRepository(Currency::class)->findTable($table);
+            $lol = new ShowDataService($emi);
+            $lol2 = $lol->getData($currency);
         }
         return $this->render('rates/index.html.twig' ,[
             'allCurrencies' => $currency,
+            'lol' => $lol2,
             'tableForm' => $form->createView(),
         ]);
     }

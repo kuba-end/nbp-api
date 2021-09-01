@@ -26,9 +26,21 @@
 
         <div class="card">
                             <div class="card-body">
+
                                 <p><b>Name: </b>{{ currency.name }}</p>
                                 <p><b>Currency code: </b>{{ currency.currencycode }}</p>
-                                <p><b>Rate: </b>{{ currency.exchangerate}} gr <b>for </b>{{ currency.amount }} {{ currency.currencycode }}</p>
+                                <p><b>Rate: </b>
+                                    {% if currency.exchangerate >= 100 %}
+                                        {{ currency.exchangerate/100}}
+                                    {% else %}
+                                        {{ currency.exchangerate }}
+                                    {% endif %}
+                                    {% if currency.exchangerate >= 100 %}
+                                        zł
+                                    {% else %}
+                                        gr
+                                    {% endif%}
+                                        <b>for </b>{{ currency.amount }} {{ currency.currencycode }}</p>
                                 <p><b>Currency table: </b>{{ currency.tablee }}</p>
 
                             </div>

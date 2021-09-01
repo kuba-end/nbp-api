@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ShowDataService
 {
+    const TABLE = ['A','B'];
     public $em;
 
     public function __construct(EntityManagerInterface $em)
@@ -14,16 +15,22 @@ class ShowDataService
         $this->em = $em;
     }
 
-    private function getData()
+    public function getData(array $currency)
     {
-        $all = $this->em->getRepository(Currency::class)->findAll();
-        $this->showData($all);
+        foreach ($currency as $data)
+        {
+            return [$data->getName(),
+            $data->getCurrencyCode(),
+            $data->getExchangeRate(),
+            $data->getAmount(),
+            $data->getTablee()];
+        }
     }
     public function showData($data)
     {
         foreach ($data as $single)
         {
-            return $single;
+             var_dump($single);
         }
     }
 }
